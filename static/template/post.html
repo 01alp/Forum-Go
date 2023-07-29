@@ -1,0 +1,247 @@
+{{template "base" .}}
+{{define "title"}}Forum - {{.Post.Title}}{{end}}
+{{define "username"}}{{.User.Username}}{{end}}
+{{define "content"}}
+<!-- Start: post-menu-container -->
+<div class="container-fluid">
+    <div class="float-end" id="divpost">
+        <!-- Start: psotCategoryDiv -->
+        <div class="d-flex flex-row">
+            <!-- Start: postheader -->
+            <div class="col-6 d-flex align-items-center align-items-xl-center">
+                <h2 style="margin-top: 10px;margin-left: 10px;">Post:</h2>
+            </div><!-- End: postheader -->
+        </div><!-- End: psotCategoryDiv -->
+        <div id="posts">
+            <!-- Start: post-column -->
+            <div class="col"
+                style="margin: 10px;box-shadow: 2px 2px 4px 4px;border-radius: 10px;background: rgba(244,240,240,0.7);padding: 10px;">
+                <div class="row" style="margin-right: 10px;margin-top: 10px;">
+                    <div class="col d-flex justify-content-xxl-start align-items-xxl-center">
+                        <div class="text-start d-flex align-items-center"
+                            style="margin-top: 5px;margin-right: 5px;margin-left: 5px;"><img
+                                src="/static/template/assets/img/icons/user.png" style="margin-top: -4px;">
+                        </div>
+                        <span>{{.Post.User.Username}}</span>
+                    </div>
+                    <div class="col d-flex justify-content-end align-items-xxl-center" style="text-align: right;">
+                        <div class="text-start d-flex align-items-center ml-auto" id="div-right-1"><img
+                                src="/static/template/assets/img/icons/schedule.png"><span>&nbsp;{{.Post.Timestamp}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <h1>{{.Post.Title}}</h1>
+                        </div>
+                        <div>
+                            <pre>{{.Post.Content}}</pre>
+                        </div>
+
+                        {{if .Post.Image}}
+                        <div
+                            class="d-flex d-xxl-flex justify-content-center align-items-center justify-content-xxl-center align-items-xxl-center">
+                            <img class="img-fluid" src="/static/template/assets/img/{{.Post.Image}}"
+                                style="max-width: 90%;max-height: 600px;">
+                        </div>
+                        {{end}}
+                        <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row align-items-center justify-content-xl-start align-items-xl-center"
+                            style="margin-bottom: 10px;"><img src="/static/template/assets/img/icons/options.png"
+                                style="margin-right: 10px;"><span
+                                class="d-flex d-lg-flex flex-row align-items-lg-center">&nbsp;{{.Post.Thread}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 d-flex flex-row justify-content-sm-center justify-content-lg-start"
+                        id="column-like" style="margin-bottom: 5px;">
+                        <form action="/post/like/id" method="get" class="reaction-form"><input type="hidden" name="id"
+                                value="{{.Post.Id}}">
+                            {{if eq .Post.UserReaction 1}}
+                            <button
+                                class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                    src="/static/template/assets/img/icons/like.png"><span>{{.Post.Likes}}</span></button>
+                            {{else}}
+                            <button
+                                class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                    src="/static/template/assets/img/icons/like.png"><span>{{.Post.Likes}}</span></button>
+                            {{end}}
+                        </form>
+                        <form action="/post/dislike/id" method="get" class="reaction-form"><input type="hidden"
+                                name="id" value="{{.Post.Id}}">
+                            {{if eq .Post.UserReaction -1}}
+                            <button
+                                class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                    src="/static/template/assets/img/icons/dislike.png" width="24"
+                                    height="24">&nbsp;<span>{{.Post.Dislikes}}</span></button>
+                            {{else}}
+                            <button
+                                class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                    src="/static/template/assets/img/icons/dislike.png" width="24"
+                                    height="24">&nbsp;<span>{{.Post.Dislikes}}</span></button>
+                            {{end}}
+                        </form>
+                        <form action="/post/id" method="get">
+                            <input type="hidden" name="id" value="{{.Post.Id}}"><button
+                                class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                    src="/static/template/assets/img/icons/comments.png">&nbsp;<span>{{len
+                                    .Post.Comments}}</span></button>
+                        </form>
+                    </div><!-- Start: comment -->
+                    <div class="col-12 col-md-7 col-lg-8 col-xl-9 col-xxl-9 d-flex flex-row justify-content-end justify-content-lg-end"
+                        style="margin-bottom: 5px;">
+                        <form class="d-flex d-md-flex d-lg-flex flex-row justify-content-xxl-end" action="/comment"
+                            method="post" style="margin-left: 5px;width: 90%;">
+                            <input type="hidden" name="id" value="{{.Post.Id}}">
+                            <input class="form-control" type="text" name="comment" placeholder="Comment..." required=""
+                                minlength="5" maxlength="100">
+                            <button class="btn btn-dark" data-bs-toggle="tooltip" data-bss-tooltip="" type="submit"
+                                style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-left: 10px;margin-right: 5px;"
+                                title="Comment"><img src="/static/template/assets/img/icons/email.png"></button>
+                        </form>
+                    </div><!-- End: comment -->
+                    <!-- <div class="col"> -->
+                    <!-- Start: postEditDelete -->
+                    {{if eq .Post.User.Username $.User.Username}}
+                    <div class="d-flex flex-row justify-content-end justify-content-xl-end justify-content-xxl-end">
+                            <form action="/editPost" method="get"><input type="hidden" name="id"
+                                value="{{.Post.Id}}"><button
+                                    class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                    data-bs-toggle="tooltip" data-bss-tooltip="" type="submit"
+                                    style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"
+                                    title="Edit"><img
+                                        src="/static/template/assets/img/icons/comment.png">&nbsp;</button>
+                            </form>
+                            <form data-bs-toggle="tooltip" data-bss-tooltip="" action="/deletePost" method="post"
+                                title="Delete"><input type="hidden" name="id"
+                                value="{{.Post.Id}}"><button
+                                    class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                                    type="submit"
+                                    style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                        src="/static/template/assets/img/icons/delete.png">&nbsp;</button>
+                            </form>
+                        </div>
+                    {{end}}
+                    <!-- End: postEditDelete -->
+                    <!-- </div> -->
+                </div>
+            </div><!-- End: post-column -->
+        </div><!-- Start: seperator -->
+        <div class="my-4">
+            <div class="row"
+                style="margin-right: 10px;margin-top: 10px;height: 20px;background: rgba(62,83,111,0.7);border-radius: 20px;">
+            </div>
+        </div><!-- End: seperator -->
+        <!-- Start: commentDiv -->
+        {{range .Post.Comments}}
+        <div class="border rounded border-4 shadow-sm my-4"
+            style="border-style: solid;background: rgba(255,255,255,0.5);padding: 10px;">
+            <div class="row" style="margin-right: 10px;margin-top: 10px;">
+                <div class="col d-flex justify-content-xxl-start align-items-xxl-center">
+                    <div class="text-start d-flex align-items-center"
+                        style="margin-top: 5px;margin-right: 5px;margin-left: 5px;"><img
+                            src="/static/template/assets/img/icons/user.png" style="margin-top: -4px;"></div>
+                    <span>{{.User.Username}}</span>
+                </div>
+                <div class="col d-flex justify-content-end align-items-xxl-center" style="text-align: right;">
+                    <div class="text-start d-flex align-items-center ml-auto" id="div-right-3"><img
+                            src="/static/template/assets/img/icons/schedule.png"><span>&nbsp;{{.Timestamp}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex d-xl-flex align-items-xl-center">
+                <!-- Start: comment -->
+                <div class="col-12 col-md-12 col-lg-7 col-xl-8 col-xxl-8 d-flex flex-row flex-wrap"
+                    style="margin-bottom: 5px;"><span>{{.Content}}</span></div><!-- End: comment -->
+                <div class="col-md-12 col-lg-5 col-xl-4 col-xxl-4 d-flex flex-row justify-content-center flex-wrap justify-content-sm-center justify-content-lg-start justify-content-xl-end align-items-xl-center"
+                    id="column-like-1" style="margin-bottom: 5px;">
+                    <form action="/comment/like/" method="get" class="reaction-form"><input type="hidden"
+                            name="comment_id" value="{{.Id}}">
+                        {{if eq .UserReaction 1}}
+                        <button
+                            class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                        {{else}}
+                        <button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                        {{end}}
+                    </form>
+                    <form action="/comment/dislike/" method="get" class="reaction-form"><input type="hidden"
+                            name="comment_id" value="{{.Id}}">
+                        {{if eq .UserReaction -1}}
+                        <button
+                            class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/dislike.png" width="24"
+                                height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                        {{else}}
+                        <button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/dislike.png" width="24"
+                                height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                        {{end}}
+                    </form>
+                    {{if eq .User.Username $.User.Username}}
+                    <form action="/editComment" method="get"><input type="hidden"
+                        name="comment_id" value="{{.Id}}"><button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                data-bs-toggle="tooltip" data-bss-tooltip=""
+                                src="/static/template/assets/img/icons/comment.png" title="Edit">&nbsp;</button>
+                    </form>
+                    <form action="/deleteComment" method="post">
+                        <input type="hidden"
+                        name="comment_id" value="{{.Id}}"><button class="btn btn-dark d-flex d-sm-flex d-md-flex"
+                            data-bs-toggle="tooltip" data-bss-tooltip="" type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"
+                            title="Delete"><img src="/static/template/assets/img/icons/delete.png">&nbsp;</button>
+                    </form>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        <!-- End: commentDiv -->
+        {{end}}
+    </div>
+</div><!-- End: post-menu-container -->
+</section>
+{{end}}
+{{define "script"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo({
+                top: scrollpos,
+                behavior: 'instant',
+            });
+            sessionStorage.removeItem('scrollpos');
+        }
+    });
+    document.querySelectorAll('.reaction-form').forEach(item => {
+        item.addEventListener('submit', event => {
+            sessionStorage.setItem('scrollpos', window.scrollY);
+        })
+    })
+</script>
+{{end}}

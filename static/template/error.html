@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Forum - Error {{ .Status}}</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/template/assets/img/icons/forum.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/template/assets/img/icons/forum.png">
+    <link rel="stylesheet" href="/static/template/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/template/assets/css/styles.css">
+</head>
+
+<body>
+    <!-- Start: Sad Panda Error Page -->
+    <div class="container w-100 h-100" style="width: 100%;height: 100%;">
+        <div class="col">
+            <div class="row">
+                <div class="col" style="text-align: center;"><img class="img-fluid"
+                        src="/static/template/assets/img/sadpanda_vector.svg" style="width: 400px;text-align: center;">
+                    {{if .Status}}
+                    <h1><span style="color: rgb(86, 156, 214); background-color: rgb(30, 30, 30);"></span><span
+                            style="color: rgb(156, 220, 254); background-color: rgb(30, 30, 30);">{{.Status}}</span><span
+                            style="color: rgb(86, 156, 214); background-color: rgb(30, 30, 30);"></span></h1>
+                    {{end}}
+                    {{if .Message}}
+                    <h2><span style="color: rgb(86, 156, 214); background-color: rgb(30, 30, 30);"></span><span
+                            style="color: rgb(156, 220, 254); background-color: rgb(30, 30, 30);">{{.Message}}</span><span
+                            style="color: rgb(86, 156, 214); background-color: rgb(30, 30, 30);"></span></h2>
+                    {{end}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1 style="text-align: center;color: #c2c2c2;font-family: fira code;">IT'S NOT YOU<br>IT'S ME</h1>
+                    <p class="lead shadow-none"
+                        style="text-align: center;color: rgb(194,194,194);font-family: fira code;font-size: 13px;margin: 34px;">
+                        Something went terribly wrong...<br>Try and reload the page, that usually does the trick.</p>
+                    <div style="text-align: center;"><a class="btn btn-dark btn-lg" role="button" href="/">Back
+                            to Home</a></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End: Sad Panda Error Page -->
+    <script src="/static/template/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/template/assets/js/bs-init.js"></script>
+</body>
+
+</html>

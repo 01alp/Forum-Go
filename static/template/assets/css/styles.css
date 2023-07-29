@@ -1,0 +1,38 @@
+@media (min-width: 768px) {
+  #divmenu {
+    width: 20%;
+  }
+}
+
+@media (min-width: 768px) {
+  #divpost {
+    width: 80%;
+  }
+}
+
+@media (max-width: 800px) {
+  #divpost {
+    width: 100%;
+  }
+}
+
+footer {
+  position: static;
+  width: 100%;
+  clear: both;
+  padding-top: 20px;
+  bottom: 0;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.hidden {
+  display: none;
+}

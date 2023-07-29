@@ -1,0 +1,48 @@
+{{template "base" .}}
+{{define "title"}}Forum - My Posts{{end}}
+{{define "heading"}}All disliked posts{{end}}
+{{define "username"}}{{.User.Username}}{{end}}
+{{define "content"}}
+<!-- Start: post-menu-container -->
+<div class="container-fluid">
+    <div class="float-end" id="divpost">
+        {{if .LoggedIn}}
+        {{template "filterBar" .}}
+        {{template "post" .}}
+        {{else}}
+        <div class="col-6">
+            <h2 style="margin-top: 10px;margin-left: 10px;">{{template "heading"}}</h2>
+            </div>
+        <div class="col" style="padding: 10px;">
+            <p> Looks like you are trying to jump the gun, cowboy 🤠</p>
+            <p> If y'all wanna see disliked posts, you gotta first register or sign in. It's easy as pie, I
+                tell ya!</p>
+        </div>
+        {{end}}
+    </div>
+</div><!-- End: post-menu-container -->
+{{end}}
+
+{{define "script"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo({
+                top: scrollpos,
+                behavior: 'instant',
+            });
+            sessionStorage.removeItem('scrollpos');
+        }
+    });
+    document.querySelectorAll('.reaction-form').forEach(item => {
+        item.addEventListener('submit', event => {
+            sessionStorage.setItem('scrollpos', window.scrollY);
+        })
+    })
+    function submit() {
+        let form = document.getElementById("dropdown");
+        form.submit();
+    }
+</script>
+{{end}}

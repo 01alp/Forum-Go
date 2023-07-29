@@ -1,0 +1,85 @@
+{{template "base" .}}
+{{define "title"}}Forum - Edit comment{{end}}
+{{define "username"}}{{.User.Username}}{{end}}
+{{define "content"}}
+        <!-- Start: post-menu-container -->
+        <div class="container-fluid">
+            <!-- Start: divLeftMenu -->
+            <div class="float-start" id="divmenu">
+            </div><!-- End: divLeftMenu -->
+            <div class="float-end" id="divpost">
+                <!-- Start: header div -->
+                <div class="d-flex flex-row">
+                    <!-- Start: postheader -->
+                    <div class="col-6">
+                        <h2 style="margin-top: 10px;margin-left: 10px;">Edit Comment:</h2>
+                    </div><!-- End: postheader -->
+                    <!-- Start: categoryColumn -->
+                    <div class="col-6">
+                        <!-- Start: Category -->
+                        <form>
+                            <p></p>
+                        </form><!-- End: Category -->
+                    </div><!-- End: categoryColumn -->
+                </div><!-- End: header div -->
+                <div id="editComment">
+                    <!-- Start: newpostColumn -->
+                    <div class="col"
+                        style="margin: 10px;box-shadow: 2px 2px 4px 4px;border-radius: 10px;background: rgba(244,240,240,0.7);padding: 10px;">
+                        <form id="newPostForm" action="/updateComment" method="post">
+                            <input type="hidden" name="comment_id"
+                            value="{{.Comment.Id}}">
+                            <!-- Start: TitleRow -->
+                            <div class="row my-3">
+                                <div class="col-12 col-sm-12 col-md-4 d-flex align-items-center align-items-lg-center">
+                                    <h2>Message:</h2>
+                                </div>
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center"><textarea
+                                        class="form-control form-control-lg" name="content"
+                                        placeholder="Comment..." rows="3" wrap="soft" minlength="3"
+                                        maxlength="100" required="">{{.Comment.Content}}</textarea></div>
+                            </div><!-- End: TitleRow -->
+                            <div class="row">
+                                <div class="col d-flex d-lg-flex justify-content-end justify-content-lg-end"><button
+                                        class="btn btn-dark btn-lg" type="submit"
+                                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- End: newpostColumn -->
+                </div>
+            </div>
+        </div><!-- End: post-menu-container -->
+        {{end}}
+
+        {{define "script"}}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function (event) {
+                        var scrollpos = sessionStorage.getItem('scrollpos');
+                        if (scrollpos) {
+                            window.scrollTo({
+                                top: scrollpos,
+                                behavior: 'instant',
+                            });
+                            sessionStorage.removeItem('scrollpos');
+                        }
+                    });
+                    document.querySelectorAll('.reaction-form').forEach(item => {
+                        item.addEventListener('submit', event => {
+                            sessionStorage.setItem('scrollpos', window.scrollY);
+                        })
+                    })
+                    function submit() {
+                        let form = document.getElementById("dropdown");
+                        form.submit();
+                    }
+                </script>
+                <script>
+                    fileInput = document.getElementById("file-input")
+                    fileInput.addEventListener('change', () => {
+                        if (fileInput.files.length > 0) {
+                            document.getElementById("file-name").classList.add("hidden")
+                        }
+                    });
+                </script>
+        {{end}}

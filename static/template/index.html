@@ -1,0 +1,41 @@
+{{template "base" .}}
+{{define "title"}}Forum{{end}}
+{{define "username"}}{{.User.Username}}{{end}}
+{{define "heading"}}All posts{{end}}
+{{define "content"}}
+<!-- Start: post-menu-container -->
+<div class="container-fluid">
+    <div class="float-end" id="divpost">
+        {{template "filterBar" .}}
+        {{template "post" .}}
+    </div>
+</div><!-- End: post-menu-container -->
+{{end}}
+{{define "script"}}
+<!-- <script>
+    const scrollTo = "{{.ScrollTo}}";
+    post = document.getElementById('post-'+scrollTo);
+    post.scrollIntoView({ block: "center" });
+</script> -->
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo({
+                top: scrollpos,
+                behavior: 'instant',
+            });
+            sessionStorage.removeItem('scrollpos');
+        }
+    });
+    document.querySelectorAll('.reaction-form').forEach(item => {
+        item.addEventListener('submit', event => {
+            sessionStorage.setItem('scrollpos', window.scrollY);
+        })
+    })
+    function submit() {
+        let form = document.getElementById("dropdown");
+        form.submit();
+    }
+</script>
+{{end}}

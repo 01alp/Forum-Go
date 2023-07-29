@@ -1,0 +1,624 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{template "title" .}}</title>
+    <link href="/static/template/assets/css/styles.css" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/template/assets/img/icons/forum.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/template/assets/img/icons/forum.png">
+    <link rel="stylesheet" type="text/css" href="/static/template/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/template/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/template/assets/css/styles.css">
+</head>
+
+<body style="background: url(&quot;/static/template/assets/img/bg.png&quot;) top / cover repeat;">
+    <section id="herosection" style="width: 100%;height: 100vh;">
+        {{if .LoggedIn}}
+        <!-- Start: NavBarUser -->
+        <nav class="navbar navbar-dark navbar-expand-md shadow py-3" id="NavBarUser"
+            style="background: rgba(16,42,77,0.8);margin-top: -10px;">
+            <div class="container-fluid"><a class="navbar-brand d-flex align-items-center" href="/"><img
+                        class="img-fluid shadow" src="/static/template/assets/img/icons/forum.png"
+                        style="width: 42px;box-shadow: 0px 0px;"><span></span><span>&nbsp;FORUM</span></a>
+                <div class="collapse navbar-collapse d-flex justify-content-start align-items-center m-auto"
+                    id="navcol-2" style="margin-top: 10px;margin-bottom: 10px;">
+                    <ul class="navbar-nav ms-auto"></ul>
+                    <!-- Start: Notification Button-->
+                    {{if .Notifications}}
+                    <button class="btn btn-dark d-lg-flex align-items-lg-center" type="button"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);margin-right: 10px;font-size: 12px;"
+                        data-bs-target="#modal-1" data-bs-toggle="modal"><img
+                            src="/static/template/assets/img/icons/notification.png"
+                            style="margin-right: 5px;"><span>Notifications</span><span
+                            class="fw-bold text-bg-danger rounded"
+                            style="margin-right: 0px;margin-left: 8px; padding: 0 5px;min-width: 20px; background: #f54b55;">{{len
+                            .Notifications}}</span></button>
+                    {{else}}
+                    <button class="btn btn-dark d-lg-flex align-items-lg-center" type="button"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);margin-right: 10px;font-size: 12px;"
+                        data-bs-target="#modal-1" data-bs-toggle="modal"><img
+                            src="/static/template/assets/img/icons/notification2.png"
+                            style="margin-right: 5px;"><span>Notifications</span></button>
+                    {{end}}
+                    <!-- End: Notification Button-->
+                    <a class="btn btn-dark d-lg-flex align-items-lg-center" role="button"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);margin-right: 10px;font-size: 12px;"
+                        href="/dashBoard"><img src="/static/template/assets/img/icons/user.png"
+                            style="margin-right: 5px;"><span>{{template
+                            "username" .}}</span></a><a class="btn btn-dark d-lg-flex align-items-lg-center ms-md-2"
+                        role="button" href="/logout"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);font-size: 12px;"><img
+                            src="/static/template/assets/img/icons/login.png" style="margin-right: 5px;"><span>Log
+                            out</span></a>
+                </div>
+            </div>
+        </nav><!-- End: NavBarUser -->
+        {{else}}
+        <!-- Start: NavbarGuest -->
+        <nav class="navbar navbar-dark navbar-expand-md shadow py-3" id="NavBarGuest"
+            style="background: rgba(16,42,77,0.8);margin-top: -10px;">
+            <div class="container-fluid"><a class="navbar-brand d-flex align-items-center" href="/"><img
+                        class="img-fluid shadow" src="/static/template/assets/img/icons/forum.png"
+                        style="width: 42px;box-shadow: 0px 0px;"><span></span><span>&nbsp;FORUM</span></a>
+                <div class="collapse navbar-collapse d-flex justify-content-start align-items-center m-auto"
+                    id="navcol-5" style="margin-top: 10px;margin-bottom: 10px;">
+                    <ul class="navbar-nav ms-auto"></ul><button class="btn btn-dark d-lg-flex align-items-lg-center"
+                        type="button"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);margin-right: 10px;font-size: 12px;"
+                        data-bs-target="#signup" data-bs-toggle="modal"><img
+                            src="/static/template/assets/img/icons/user.png"
+                            style="margin-right: 5px;"><span>Register</span></button><a
+                        class="btn btn-dark d-lg-flex align-items-lg-center ms-md-2" role="button" href="#"
+                        style="border-radius: 20px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);font-size: 12px;"
+                        data-bs-target="#signin" data-bs-toggle="modal"><img
+                            style="transform:rotate(180deg);margin-right:5px;"
+                            src="/static/template/assets/img/icons/login.png"><span>Log In</span></a>
+                </div>
+            </div>
+            {{end}}
+        </nav><!-- End: NavbarGuest -->
+        <!-- Start: post-menu-container -->
+        <div class="container-fluid">
+            <!-- Start: divLeftMenu -->
+            <div class="float-start" id="divmenu">
+                <!-- Start: menu-column -->
+                <div class="col" id="column">
+                    <h2 style="margin-top: 10px;margin-left: 10px;">Menu</h2>
+                </div><!-- End: menu-column -->
+                <!-- Start: User Menu -->
+                {{if .LoggedIn}}
+                <nav class="navbar navbar-light navbar-expand-md" style="width: 80%;">
+                    <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler"
+                            data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span
+                                class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navcol-1">
+                            <ul class="navbar-nav d-flex flex-column flex-fill">
+                                <!-- Start: main -->
+                                <li class="nav-item d-flex flex-column" style="margin-top: 10px;"><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/house.png"
+                                            style="margin-right: 3px;">&nbsp;Home</a></li><!-- End: main -->
+                                <!-- Start: user -->
+                                <li class="nav-item d-flex flex-column"><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/dashBoard"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/user.png"
+                                            style="margin-right: 3px;">&nbsp;Dashboard</a><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/myPosts"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/email.png"
+                                            style="margin-right: 3px;">&nbsp;My
+                                        posts</a><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/likedPosts"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/like.png"
+                                            style="margin-right: 3px;">&nbsp;Liked
+                                        posts</a><a
+                                        class="btn btn-dark text-start d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex align-items-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px;font-size: 14px;"
+                                        href="/dislikedPosts"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/dislike.png"
+                                            style="margin-right: 3px;">&nbsp;Disliked posts</a><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/commentedPosts"><img
+                                            class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                            src="/static/template/assets/img/icons/comments.png"
+                                            style="margin-right: 3px;">&nbsp;Commented</a><a
+                                        class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                        role="button"
+                                        style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px; font-size: 14px;"
+                                        href="/newPost"><img src="/static/template/assets/img/icons/notes.png"
+                                            style="margin-right: 3px;">&nbsp;New post</a></li><!-- End: user -->
+                                <li class="nav-item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav><!-- End: User Menu -->
+                <!-- Start: Guest Menu -->
+                {{else}}
+                <nav class="navbar navbar-light navbar-expand-md" style="width: 80%;">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav d-flex flex-column flex-fill">
+                            <!-- Start: Guest -->
+                            <li class="nav-item d-flex flex-column" style="margin-top: 10px;"><a
+                                    class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
+                                    role="button"
+                                    style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px;"
+                                    href="/"><img
+                                        class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
+                                        src="/static/template/assets/img/icons/house.png"
+                                        style="margin-right: 3px;">&nbsp;Home</a>
+                            </li><!-- End: Guest -->
+                        </ul>
+                    </div>
+                    {{end}}
+                </nav><!-- End: Guest Menu -->
+            </div><!-- End: divLeftMenu -->
+            {{template "content" .}}
+            <!-- Start: notification-modal -->
+            <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #000000;">
+                            <h4 class="modal-title" style="color: rgb(255,255,255);">Notifications</h4>
+                            {{if .Notifications}}
+                            <form action="/disableNotifications" method="post"><button href="/disableNotifications"
+                                    style="background:black" type="submit" class="btn btn-link link-light"
+                                    data-bs-dismiss="modal" aria-label="Mark all as read">Mark all as read</button>
+                            </form>
+                            {{end}}
+                        </div>
+                        {{if .Notifications}}
+                        {{range .Notifications}}
+                        <div class="modal-body container-fluid">
+                            <div style="color: rgb(0,0,0);" class="row">
+                                <div class="col-1">
+                                    <img src="/static/template/assets/img/icons/user.png" style="margin-right: 3px;">
+                                </div>
+                                <div style="align-items: center;" class="col-11">
+                                    <span>{{.Sender}} {{.Action}} your {{.Object}} {{if eq .Object "comment"}} to post
+                                        {{end}} <a href="/post/id?id={{.ObjectId}}">{{.Title}}</a></span>
+                                    <p class="mb-0"><span style="font-size:12px;"
+                                            class="text-secondary">{{.Timestamp}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+                        {{else}}
+                        <div class="modal-body">
+                            <div style="color: rgb(0,0,0);">
+                                <p>No notifications for you, cowboy 🤠. Post more, get more!</p>
+                            </div>
+                        </div>
+                        {{end}}
+                        <div class="modal-footer"><button class="btn btn-dark" type="button" data-bs-dismiss="modal"
+                                style="border-style: solid;border-radius: 10px;">Close</button></div>
+                    </div>
+                </div>
+            </div><!-- End: notification-modal -->
+            <!-- Start: signin -->
+            <div class="modal fade" role="dialog" tabindex="-1" id="signin">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Log In</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/auth" method="post">
+                                <div class="form-group mb-3">
+                                    <div class="input-group"><span
+                                            class="text-primary input-group-text input-group-text"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                fill="currentColor" viewbox="0 0 16 16" class="bi bi-person-fill">
+                                                <path
+                                                    d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z">
+                                                </path>
+                                            </svg></span><input class="form-control form-control" type="text"
+                                            name="email" required="" placeholder="Email" minlength="4" maxlength="30"
+                                            title="Min. 4, Max. 30 characters"></div>
+                                    {{if .Message}}
+                                    <p class="text-danger">{{index .Message.Errors "EmailLogin"}}</p>
+                                    {{end}}
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="input-group"><span
+                                            class="text-primary input-group-text input-group-text"><i
+                                                class="fa fa-lock"></i></span><input class="form-control form-control"
+                                            type="password" name="password" required="" placeholder="Password"
+                                            minlength="4" maxlength="20" title="Min. 4, Max. 20 characters">
+                                    </div>
+                                    {{if .Message}}
+                                    <p class="text-danger">{{index .Message.Errors "PasswordLogin"}}</p>
+                                    {{end}}
+                                </div>
+                                <div class="form-group mb-3"><button class="btn btn-primary btn-lg" style="width: 100%;"
+                                        type="submit">Log in</button></div>
+                            </form>
+                            <hr style="background-color: #bababa;">
+                            <p class="text-center">Or&nbsp;<a class="text-decoration-none" href="#">Forget password</a>
+                            </p>
+                            <p class="text-center">Don't have an account? &nbsp;<a class="text-decoration-none" href="#"
+                                    data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#signup">Sign Up</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End: signIn -->
+            <!-- Start: signUp -->
+            <div class="modal fade" role="dialog" tabindex="-1" id="signup">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Sign Up Now</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center"><button class="btn btn-primary text-start" style="width: 100%;"
+                                    type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                        fill="currentColor" viewbox="0 0 16 16" class="bi bi-github">
+                                        <path
+                                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                                        </path>
+                                    </svg>&nbsp; Continue with GitHub</button></div>
+                            <div class="text-center mt-2"><button class="btn btn-light text-start border-dark"
+                                    style="width: 100%;background: rgb(255,77,77);color: rgb(255,255,255);"
+                                    type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                        fill="currentColor" viewbox="0 0 16 16" class="bi bi-google"
+                                        style="color: rgb(255,255,255);">
+                                        <path
+                                            d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z">
+                                        </path>
+                                    </svg>&nbsp; Continue with Google</button></div>
+                            <form class="mt-4" action="/registration" method="post">
+                                <div class="form-group mb-3">
+                                    <div class="input-group"><span
+                                            class="text-primary input-group-text input-group-text"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                fill="currentColor" viewbox="0 0 16 16" class="bi bi-person-fill">
+                                                <path
+                                                    d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z">
+                                                </path>
+                                            </svg></span><input class="form-control form-control" type="text"
+                                            name="username" required="" placeholder="Username" minlength="4"
+                                            maxlength="30" title="Min. 4, Max. 20 characters"></div>
+                                    {{if .Message}}
+                                    <p class="text-danger">{{index .Message.Errors "UsernameRegistration"}}</p>
+                                    {{end}}
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="input-group"><span
+                                            class="text-primary input-group-text input-group-text"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                fill="currentColor" viewbox="0 0 16 16" class="bi bi-envelope-fill">
+                                                <path
+                                                    d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z">
+                                                </path>
+                                            </svg></span><input class="form-control form-control" type="email"
+                                            name="email" required="" placeholder="Email" minlength="6" maxlength="50"
+                                            title="Min. 6, Max. 50 characters and @"></div>
+                                    {{if .Message}}
+                                    <p class="text-danger">{{index .Message.Errors "EmailRegistration"}}</p>
+                                    {{end}}
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="input-group"><span
+                                            class="text-primary input-group-text input-group-text"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                fill="currentColor" viewbox="0 0 16 16" class="bi bi-unlock-fill">
+                                                <path
+                                                    d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z">
+                                                </path>
+                                            </svg></span><input class="form-control form-control" type="password"
+                                            name="password" required="" placeholder="Password" minlength="4"
+                                            maxlength="20" title="Min. 4, Max. 20 characters"></div>
+                                    {{if .Message}}
+                                    <p class="text-danger">{{index .Message.Errors "PasswordRegistration"}}</p>
+                                    {{end}}
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="form-check"><input type="checkbox" class="form-check-input"
+                                            id="formCheck-1" required="" checked=""><label
+                                            class="form-label form-check-label" for="formCheck-1">I agree all the terms
+                                            and conditions.</label></div>
+                                </div>
+                                <div class="form-group mb-3"><button class="btn btn-primary btn-lg" style="width: 100%;"
+                                        type="submit">Sign Up</button></div>
+                            </form>
+                            <hr style="background-color: #bababa;">
+                            <p class="text-center">Already have an Account?&nbsp;<a class="text-decoration-none"
+                                    href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#signin">Log
+                                    In</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End: signUp -->
+    </section>
+
+    <footer class="text-center bg-dark">
+        <div class="container text-white py-4 py-lg-5">
+            <p>The forum project utilizes standard Golang packages.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item me-4"><span><img src="/static/template/assets/img/icons/git.png"
+                            style="margin-right: 5px;"><a class="link-light"
+                            href="https://01.kood.tech/git/maggieeagle">maggieeagle</a></span></li>
+                <li class="list-inline-item me-4"><span><img src="/static/template/assets/img/icons/git.png"
+                            style="margin-right: 5px;"><a class="link-light"
+                            href="https://01.kood.tech/git/elinana">Elina
+                            Razena</a></span></li>
+                <li class="list-inline-item me-4"><span><img src="/static/template/assets/img/icons/git.png"
+                            style="margin-right: 5px;"><a class="link-light"
+                            href="https://01.kood.tech/git/Antosha7">Antosha7</a></span></li>
+                <li class="list-inline-item me-4"><span><img src="/static/template/assets/img/icons/git.png"
+                            style="margin-right: 5px;"><a class="link-light"
+                            href="https://01.kood.tech/git/alpbal">AlpBal</a></span></li>
+            </ul>
+            <p class="text-muted mb-0">Copyright © 2023</p>
+        </div>
+    </footer>
+
+    <script src="/static/template/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/template/assets/js/bs-init.js"></script>
+    <script>
+        const SigninModalOpen = "{{.SigninModalOpen}}"
+        if (SigninModalOpen == "true") {
+            const modal = new bootstrap.Modal(document.getElementById('signin'));
+            modal.show();
+        }
+        const SignupModalOpen = "{{.SignupModalOpen}}"
+        if (SignupModalOpen == "true") {
+            const modal = new bootstrap.Modal(document.getElementById('signup'));
+            modal.show();
+        }
+    </script>
+    {{template "script" .}}
+</body>
+
+</html>
+{{end}}
+
+{{ define "post" }}
+<div id="posts">
+    <!-- Start: post-column -->
+    {{range .Posts}}
+    <div class="col"
+        style="box-shadow: 2px 2px 4px 4px;border-radius: 10px;background: rgba(244,240,240,0.7);padding: 10px;margin: 10px;">
+        <div class="row">
+            <div class="col d-flex align-items-center">
+                <div class="text-start d-flex flex-row align-items-md-center align-items-xxl-center"
+                    style="margin-top: 5px;margin-right: 5px;margin-left: 5px;"><img
+                        src="static/template/assets/img/icons/user.png" style="margin-top: -4px;"></div>
+                <span>{{ .User.Username}}</span>
+            </div>
+            <div class="col d-flex justify-content-end align-items-xxl-center" style="text-align: right;">
+                <div class="text-start d-flex align-items-center ml-auto" id="div-right-1"><img
+                        src="static/template/assets/img/icons/schedule.png"><span>&nbsp;{{ .Timestamp}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <h1>{{ .Title}}</h1>
+                </div>
+                <div class="w-70">
+                    <pre class="text-truncate">{{ .Content}}</pre>
+                </div>
+                {{if .Image}}
+                <div
+                    class="d-flex d-xxl-flex justify-content-left align-items-left justify-content-xxl-left align-items-xxl-left">
+                    <img class="img-fluid" src="/static/template/assets/img/{{.Image}}"
+                        style="max-width: 90%;max-height: 280px;">
+                </div>
+                <br>
+                {{end}}
+                <div
+                    class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row align-items-center justify-content-xl-start align-items-xl-center">
+                    <form action="/post/id" method="get">
+                        <input type="hidden" name="id" value="{{.Id}}"><button class="btn btn-dark" type="submit"
+                            style="margin-bottom: 10px;box-shadow: 2px 3px 2px 2px var(--bs-btn-bg);margin-right: 10px;">More...</button><img
+                            src="static/template/assets/img/icons/options.png">
+                    </form><span class="d-flex d-lg-flex flex-row align-items-lg-center">&nbsp;{{
+                        .Thread}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 d-flex flex-row justify-content-sm-center justify-content-lg-start"
+                id="column-like" style="margin-bottom: 5px;">
+                <form action="/post/like/id" method="get" class="reaction-form"><input type="hidden" name="id"
+                        value="{{.Id}}">
+                    {{if eq .UserReaction 1}}
+                    <button
+                        class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                        type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                            src="static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                    {{else}}
+                    <button
+                        class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                        type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                            src="static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                    {{end}}
+                </form>
+                <form action="/post/dislike/id" method="get" class="reaction-form"><input type="hidden" name="id"
+                        value="{{.Id}}">
+                    {{if eq .UserReaction -1}}
+                    <button
+                        class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                        type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                            src="static/template/assets/img/icons/dislike.png" width="24"
+                            height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                    {{else}}
+                    <button
+                        class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                        type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                            src="static/template/assets/img/icons/dislike.png" width="24"
+                            height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                    {{end}}
+                </form>
+                <form action="/post/id" method="get">
+                    <input type="hidden" name="id" value="{{.Id}}"><button
+                        class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                        type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                            src="static/template/assets/img/icons/comments.png">&nbsp;<span>{{len
+                            .Comments}}</span></button>
+                </form>
+            </div><!-- Start: comment -->
+            <div class="col-12 col-md-7 col-lg-8 col-xl-9 col-xxl-9 d-flex justify-content-xxl-end align-items-xxl-center"
+                style="margin-bottom: 5px;">
+                <form class="d-flex" action="/comment" method="post" style="margin-left: 5px;width: 90%;">
+                    <input type="hidden" name="id" value="{{.Id}}">
+                    <input class="form-control" type="text" name="comment" placeholder="Comment..." required=""
+                        minlength="5" maxlength="100">
+                    <button class="btn btn-dark" type="submit"
+                        style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-left: 10px;" title="Comment"><img
+                            src="static/template/assets/img/icons/email.png"></button>
+                </form>
+            </div><!-- End: comment -->
+        </div>
+    </div><!-- End: post-column -->
+    <!-- Start: commentDiv -->
+    {{if $.ShowComments}}
+        {{range .Comments}}
+            <div class="border rounded border-4 shadow-sm my-4"
+            style="border-style: solid;background: rgba(255,255,255,0.5);padding: 10px;">
+            <div class="row" style="margin-right: 10px;margin-top: 10px;">
+                <div class="col d-flex justify-content-xxl-start align-items-xxl-center">
+                    <div class="text-start d-flex align-items-center"
+                        style="margin-top: 5px;margin-right: 5px;margin-left: 5px;"><img
+                            src="/static/template/assets/img/icons/user.png" style="margin-top: -4px;"></div>
+                    <span>{{.User.Username}}</span>
+                </div>
+                <div class="col d-flex justify-content-end align-items-xxl-center" style="text-align: right;">
+                    <div class="text-start d-flex align-items-center ml-auto" id="div-right-3"><img
+                            src="/static/template/assets/img/icons/schedule.png"><span>&nbsp;{{.Timestamp}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex d-xl-flex align-items-xl-center">
+                <!-- Start: comment -->
+                <div class="col-12 col-md-12 col-lg-7 col-xl-8 col-xxl-8 d-flex flex-row flex-wrap"
+                    style="margin-bottom: 5px;"><span>{{.Content}}</span></div><!-- End: comment -->
+                <div class="col-md-12 col-lg-5 col-xl-4 col-xxl-4 d-flex flex-row justify-content-center flex-wrap justify-content-sm-center justify-content-lg-start justify-content-xl-end align-items-xl-center"
+                    id="column-like-1" style="margin-bottom: 5px;">
+                    <form action="/comment/like/" method="get" class="reaction-form"><input type="hidden"
+                            name="comment_id" value="{{.Id}}">
+                        {{if eq .UserReaction 1}}
+                        <button
+                            class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                        {{else}}
+                        <button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/like.png"><span>{{.Likes}}</span></button>
+                        {{end}}
+                    </form>
+                    <form action="/comment/dislike/" method="get" class="reaction-form"><input type="hidden"
+                            name="comment_id" value="{{.Id}}">
+                        {{if eq .UserReaction -1}}
+                        <button
+                            class="btn active btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/dislike.png" width="24"
+                                height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                        {{else}}
+                        <button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                src="/static/template/assets/img/icons/dislike.png" width="24"
+                                height="24">&nbsp;<span>{{.Dislikes}}</span></button>
+                        {{end}}
+                    </form>
+                    {{if eq .User.Username $.User.Username}}
+                    <form action="/editComment" method="get">
+                        <input type="hidden"
+                        name="comment_id" value="{{.Id}}"><button
+                            class="btn btn-dark d-flex d-sm-flex d-md-flex justify-content-start justify-content-sm-start justify-content-md-start"
+                            type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"><img
+                                data-bs-toggle="tooltip" data-bss-tooltip=""
+                                src="/static/template/assets/img/icons/comment.png" title="Edit">&nbsp;</button>
+                    </form>
+                    <form action="/deleteComment" method="post">
+                        <input type="hidden"
+                        name="comment_id" value="{{.Id}}"><button class="btn btn-dark d-flex d-sm-flex d-md-flex"
+                            data-bs-toggle="tooltip" data-bss-tooltip="" type="submit"
+                            style="box-shadow: 2px 2px 2px 2px var(--bs-btn-bg);margin-top: 5px;margin-right: 5px;margin-bottom: 5px;"
+                            title="Delete"><img src="/static/template/assets/img/icons/delete.png">&nbsp;</button>
+                    </form>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+    {{end}}
+    <!-- End: commentDiv -->
+    {{end}}
+</div>
+{{end}}
+
+{{ define "filterBar" }}
+<!-- Start: psotCategoryDiv -->
+<div class="d-flex flex-row">
+    <!-- Start: postheader -->
+    <div class="col-6"> {{ if and (.Filter) (ne .Filter "All Categories")}}
+        <h2 style="margin-top: 10px;margin-left: 10px;">
+            {{template "heading" .}} in {{ .Filter}}</h2>
+        {{else}}
+        <h2 style="margin-top: 10px;margin-left: 10px;">
+            {{template "heading" .}}</h2>
+        {{end}}
+    </div><!-- End: postheader -->
+    <!-- Start: categoryColumn -->
+    <div class="col-6">
+        <!-- Start: Category -->
+        <form id="dropdow"><select class="form-select" style="margin-top: 10px;" name="filter" onchange="submit()">
+                <optgroup label="Categories">
+                    <!-- <option disabled selected hidden>Categories</option> -->
+                    <option>All Categories</option>
+                    {{$filter := .Filter}}
+                    {{ range .Threads}}
+                    {{if eq . $filter}}
+                    <option disabled selected>{{ . }}</option>
+                    {{else}}
+                    <option>{{ . }}</option>
+                    {{end}}
+                    {{end}}
+                </optgroup>
+            </select></form><!-- End: Category -->
+    </div><!-- End: categoryColumn -->
+</div><!-- End: psotCategoryDiv -->
+{{end}}

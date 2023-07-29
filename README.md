@@ -13,16 +13,10 @@ This project consists in creating a web forum that allows :
 
 ## Authors
 
-Elina Razena @elinana
-
-Litvintsev Anton @Antosha7
-
-Alper Balaban @alpbal
-
-Orel Margarita @maggieeagle
+alpbal
 
 ## Usage
-  
+
 To run the web-site on local machine:
 
 - Download the repository

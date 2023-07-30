@@ -22,6 +22,10 @@ type Message struct {
 	Errors           map[string]string
 
 	UsernameLogin string
+    FirstName string
+    LastName  string
+    Age       int
+    Gender    string	
 }
 
 func (msg *Message) ValidateLogin() bool {
@@ -83,6 +87,25 @@ func (msg *Message) ValidateRegistration() bool {
 	if len(msg.PasswordRegister) < 4 || len(msg.PasswordRegister) > 20 {
 		msg.Errors["PasswordRegistration"] = "Invalid lenght of password"
 	}
+	// Validate first name
+    if len(msg.FirstName) < 1 || len(msg.FirstName) > 30 {
+        msg.Errors["FirstNameRegistration"] = "Invalid length of first name"
+    }
+
+    // Validate last name
+    if len(msg.LastName) < 1 || len(msg.LastName) > 30 {
+        msg.Errors["LastNameRegistration"] = "Invalid length of last name"
+    }
+
+    // Validate age
+    if msg.Age < 1 || msg.Age > 150 {
+        msg.Errors["AgeRegistration"] = "Invalid age"
+    }
+
+    // Validate gender
+    if msg.Gender != "male" && msg.Gender != "female" && msg.Gender != "other" {
+        msg.Errors["GenderRegistration"] = "Invalid gender"
+    }
 	return len(msg.Errors) == 0
 }
 

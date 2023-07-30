@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -67,30 +68,43 @@ func auth(w http.ResponseWriter, r *http.Request) {
 
 
 func registration(w http.ResponseWriter, r *http.Request) {
-	var creds Credentials // users input
-	// Parse form to credentials
-	creds.Email = r.FormValue("email")
-	creds.Username = r.FormValue("username")
-	creds.Password = r.FormValue("password")
-	msg := &Message{
-		UsernameRegister: creds.Username,
-		EmailRegister:    creds.Email,
-		PasswordRegister: creds.Password,
-	}
-	if !msg.ValidateRegistration() {
-		data := Data{LoggedIn: false, User: User{}, Message: msg, Posts: fetchAllPosts(database), Post: Post{}, Threads: fetchAllThreads(database), SignupModalOpen: "true", ScrollTo: ""}
-		reverse(data.Posts)
-		tmpl, _ := template.ParseFiles("static/template/index.html", "static/template/base.html")
-		tmpl.Execute(w, data)
-		return
-	} else {
-		p, _ := hashPassword(creds.Password)
-		addUser(database, creds.Username, creds.Email, p)
-		fmt.Println(creds.Username, creds.Email, p)
-		setSessionToken(w, creds)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-	}
+    var creds Credentials // users input
+    // Parse form to credentials
+    creds.Email = r.FormValue("email")
+    creds.Username = r.FormValue("username")
+    creds.Password = r.FormValue("password")
+    ageStr := r.FormValue("age")
+    age, err := strconv.Atoi(ageStr)
+    if err != nil {
+        // handle error
+        fmt.Println(err)
+        http.Error(w, "Server error", http.StatusInternalServerError)
+        return
+    }
+    msg := &Message{
+        UsernameRegister: creds.Username,
+        EmailRegister:    creds.Email,
+        PasswordRegister: creds.Password,
+        FirstName:        r.FormValue("first_name"),
+        LastName:         r.FormValue("last_name"),
+        Age:              age,
+        Gender:           r.FormValue("gender"),
+    }
+    if !msg.ValidateRegistration() {
+        data := Data{LoggedIn: false, User: User{}, Message: msg, Posts: fetchAllPosts(database), Post: Post{}, Threads: fetchAllThreads(database), SignupModalOpen: "true", ScrollTo: ""}
+        reverse(data.Posts)
+        tmpl, _ := template.ParseFiles("static/template/index.html", "static/template/base.html")
+        tmpl.Execute(w, data)
+        return
+    } else {
+        p, _ := hashPassword(creds.Password)
+        addUser(database, creds.Username, creds.Email, p)
+        fmt.Println(creds.Username, creds.Email, p)
+        setSessionToken(w, creds)
+        http.Redirect(w, r, "/", http.StatusSeeOther)
+    }
 }
+
 func logout(w http.ResponseWriter, r *http.Request) {
 	c, err := r.Cookie("session_token")
 	if err != nil {

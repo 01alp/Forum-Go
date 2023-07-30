@@ -27,30 +27,45 @@ type Credentials struct {
 func auth(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
 	// Parse form to credentials
+	creds.Username = r.FormValue("username")
 	creds.Email = r.FormValue("email")
 	creds.Password = r.FormValue("password")
-	//add validation!!!
-	msg := &Message{
-		EmailLogin:    creds.Email,
-		PasswordLogin: creds.Password,
+
+	// Initialize Message for login validation
+	msg := &Message{}
+
+	if creds.Username != "" {
+		// If the username field is not empty, use it for login
+		msg.UsernameLogin = creds.Username
+		msg.PasswordLogin = creds.Password
+	} else if creds.Email != "" {
+		// If the email field is not empty, use it for login
+		msg.EmailLogin = creds.Email
+		msg.PasswordLogin = creds.Password
+	} else {
+		// If both fields are empty, return an error message
+		fmt.Println("Please enter a username or an email to login")
+		return
 	}
-	fmt.Printf("Try to login with credentials: Email: %s, Password: %s\n", msg.EmailLogin, msg.PasswordLogin)
+
+	// Validate login credentials
 	if !msg.ValidateLogin() {
+		fmt.Println("Invalid login credentials")
+		// Prepare data to send to the template
 		data := Data{LoggedIn: false, User: User{}, Message: msg, Posts: fetchAllPosts(database), Post: Post{}, Threads: fetchAllThreads(database), SigninModalOpen: "true", ScrollTo: ""}
 		data.Posts = fillPosts(&data, fetchAllPosts(database))
 		reverse(data.Posts)
 		tmpl, _ := template.ParseFiles("static/template/index.html", "static/template/base.html")
-		err := tmpl.Execute(w, data)
-		if err != nil {
-			fmt.Println(err)
-		}
+		tmpl.Execute(w, data)
 		return
 	}
+
 	fmt.Println("Logged in, preparing token...")
-	// creds.Username = fetchUserByEmail(database,creds.Email).Username
 	setSessionToken(w, creds)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+
 func registration(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials // users input
 	// Parse form to credentials

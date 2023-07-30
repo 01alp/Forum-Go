@@ -20,24 +20,31 @@ type Message struct {
 	Threads          []string
 	ImageHeader      *multipart.FileHeader
 	Errors           map[string]string
+
+	UsernameLogin string
 }
 
 func (msg *Message) ValidateLogin() bool {
 
-	msg.Errors = make(map[string]string)
+    msg.Errors = make(map[string]string)
 
-	user := fetchUserByEmail(database, msg.EmailLogin)
-	if user == (User{}) {
-		msg.Errors["EmailLogin"] = "No user with such email"
-		return len(msg.Errors) == 0
-	}
-	
-	if !checkPasswordHash(msg.PasswordLogin, user.Password) {
-		// Handle wrong password
-		msg.Errors["PasswordLogin"] = "Wrong password"
-	}
+    user := User{}
+    if msg.EmailLogin != "" {
+        user = fetchUserByEmail(database, msg.EmailLogin)
+    } else if msg.UsernameLogin != "" {
+        user = fetchUserByUsername(database, msg.UsernameLogin)
+    }
+    if user == (User{}) {
+        msg.Errors["Login"] = "No user with such username or email"
+        return len(msg.Errors) == 0
+    }
 
-	return len(msg.Errors) == 0
+    if !checkPasswordHash(msg.PasswordLogin, user.Password) {
+        // Handle wrong password
+        msg.Errors["PasswordLogin"] = "Wrong password"
+    }
+
+    return len(msg.Errors) == 0
 }
 
 func (msg *Message) ValidateRegistration() bool {

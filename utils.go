@@ -6,29 +6,31 @@ import (
 	"regexp"
 	"time"
 
+	"reflect"
+
 	"github.com/gofrs/uuid"
 	"golang.org/x/crypto/bcrypt"
-	"reflect"
 )
 
 func setSessionToken(w http.ResponseWriter, creds Credentials) {
-	// Create a new random session token
-	uuid, _ := uuid.NewV4()
-	sessionToken := (uuid).String()
-	expiresAt := time.Now().Add(15 * 60 * time.Second)
-	// Set the token in the session map, along with the session information
-	dropOpenSession(fetchUserByEmail(database, creds.Email))
-	sessions[sessionToken] = session{
-		user:   fetchUserByEmail(database, creds.Email),
-		expiry: expiresAt,
-	}
-	// http.SetCookie(w, &http.Cookie{
-	// 	Name:    "session_token",
-	// 	Value:   sessionToken,
-	// 	Path:    "/",
-	// 	Expires: expiresAt,
-	// })
-	setSessionCookie(w, sessionToken, expiresAt)
+    // Create a new random session token
+    uuid, _ := uuid.NewV4()
+    sessionToken := (uuid).String()
+    expiresAt := time.Now().Add(15 * 60 * time.Second)
+    // Set the token in the session map, along with the session information
+    user := User{}
+    if creds.Email != "" {
+        user = fetchUserByEmail(database, creds.Email)
+    } else if creds.Username != "" {
+        user = fetchUserByUsername(database, creds.Username)
+    }
+    dropOpenSession(user)
+    sessions[sessionToken] = session{
+        user:   user,
+        expiry: expiresAt,
+    }
+    // ...
+    setSessionCookie(w, sessionToken, expiresAt)
 }
 
 func dropOpenSession(user User) {

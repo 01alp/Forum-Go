@@ -98,7 +98,7 @@ func registration(w http.ResponseWriter, r *http.Request) {
         return
     } else {
         p, _ := hashPassword(creds.Password)
-        addUser(database, creds.Username, creds.Email, p)
+        addUser(database, creds.Username, creds.Email, p, msg.FirstName, msg.LastName, msg.Age)
         fmt.Println(creds.Username, creds.Email, p)
         setSessionToken(w, creds)
         http.Redirect(w, r, "/", http.StatusSeeOther)

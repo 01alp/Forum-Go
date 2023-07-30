@@ -27,11 +27,28 @@
                         <div class="d-xl-flex align-items-xl-center" style="margin: 10px;"><img
                                 src="static/template/assets/img/icons/user.png" style="margin-right: 10px;"><span
                                 style="margin-right: 10px;">&nbsp;Username:&nbsp;</span><span
-                                style="margin-right: 10px;">{{ .User.Username}}</span></div>
+                                style="margin-right: 10px;">{{
+                                .User.Username}}</span></div>
                         <div class="d-xl-flex align-items-xl-center" style="margin: 10px;"><img
                                 src="static/template/assets/img/icons/email.png" style="margin-right: 10px;"><span
                                 style="margin-right: 10px;">&nbsp;Email:&nbsp;</span><span
-                                style="margin-right: 10px;">{{ .User.Email}}</span></div>
+                                style="margin-right: 10px;">{{
+                                .User.Email}}</span></div>
+                        <div class="d-xl-flex align-items-xl-center" style="margin: 10px;"><img
+                                src="static/template/assets/img/icons/user.png" style="margin-right: 10px;"><span
+                                style="margin-right: 10px;">&nbsp;Name:&nbsp;</span><span style="margin-right: 10px;">{{
+                                .User.FirstName}}</span>
+                        </div>
+                        <div class="d-xl-flex align-items-xl-center" style="margin: 10px;"><img
+                                src="static/template/assets/img/icons/user.png" style="margin-right: 10px;"><span
+                                style="margin-right: 10px;">&nbsp;Surname:&nbsp;</span><span
+                                style="margin-right: 10px;">{{
+                                .User.LastName}}</span></div>
+                        <div class="d-xl-flex align-items-xl-center" style="margin: 10px;"><img
+                                src="static/template/assets/img/icons/user.png" style="margin-right: 10px;"><span
+                                style="margin-right: 10px;">&nbsp;Age:&nbsp;</span><span style="margin-right: 10px;">{{
+                                .User.Age}}</span>
+                        </div>
                     </div>
                     <div class="col d-flex justify-content-end align-items-xxl-center"
                         style="text-align: right;padding: 10px;">
@@ -56,8 +73,7 @@
                                 style="margin-bottom: 10px;box-shadow: 2px 2px 4px 2px rgb(0,0,0);border-radius: 10px;"
                                 href="/dashBoard?content=disliked"><img
                                     class="d-flex d-sm-flex justify-content-start justify-content-sm-start"
-                                    src="static/template/assets/img/icons/dislike.png"
-                                    style="margin-right: 3px;">&nbsp;
+                                    src="static/template/assets/img/icons/dislike.png" style="margin-right: 3px;">&nbsp;
                                 Disliked posts</a><a
                                 class="btn btn-dark d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start align-items-lg-center align-items-xl-center"
                                 role="button"
@@ -75,15 +91,15 @@
                                     src="static/template/assets/img/icons/notification.png"
                                     style="margin-right: 3px;">&nbsp;
                                 Notifications</a>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div><!-- End: post-column -->
             {{if .Posts}}
-                {{template "post" .}}
+            {{template "post" .}}
             {{end}}
             {{if .AllNotifications}}
-                {{template "notifications" .}}
+            {{template "notifications" .}}
             {{end}}
         </div>
         {{else}}
@@ -92,7 +108,7 @@
             <p> If y'all wanna see your profile, you gotta first register or sign in. It's easy as pie, I
                 tell ya!</p>
         </div>
-{{end}}
+        {{end}}
     </div>
 </div><!-- End: post-menu-container -->
 {{end}}
@@ -110,7 +126,8 @@
                 <div class="text-start d-flex flex-row align-items-md-center align-items-xxl-center"
                     style="margin-top: 5px;margin-right: 5px;margin-left: 5px;"><img
                         src="static/template/assets/img/icons/user.png" style="margin-top: -4px;"></div>
-                    <span><strong>{{.Sender}}</strong> {{.Action}} your <strong>{{.Object}}</strong> {{if eq .Object "comment"}} to post {{end}} <a href="/post/id?id={{.ObjectId}}">{{.Title}}</a></span>
+                <span><strong>{{.Sender}}</strong> {{.Action}} your <strong>{{.Object}}</strong> {{if eq .Object
+                    "comment"}} to post {{end}} <a href="/post/id?id={{.ObjectId}}">{{.Title}}</a></span>
             </div>
             <div class="col-3 d-flex justify-content-end align-items-xxl-center" style="text-align: right;">
                 <div class="text-start d-flex align-items-center ml-auto" id="div-right-1"><img

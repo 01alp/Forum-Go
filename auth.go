@@ -98,12 +98,13 @@ func registration(w http.ResponseWriter, r *http.Request) {
         return
     } else {
         p, _ := hashPassword(creds.Password)
-        addUser(database, creds.Username, creds.Email, p, msg.FirstName, msg.LastName, msg.Age)
+        addUser(database, creds.Username, creds.Email, p, msg.FirstName, msg.LastName, msg.Age, msg.Gender)
         fmt.Println(creds.Username, creds.Email, p)
         setSessionToken(w, creds)
         http.Redirect(w, r, "/", http.StatusSeeOther)
     }
 }
+
 
 func logout(w http.ResponseWriter, r *http.Request) {
 	c, err := r.Cookie("session_token")

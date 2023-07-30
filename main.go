@@ -81,13 +81,13 @@ func setDB() {
 	createNotificationsTable(database)
 
 	p, _ := hashPassword("1234")
-addUser(database, "test", "test@gmail.com", p, "missingArgument1", "missingArgument2", 18)
-p, _ = hashPassword("blacksheep")
-addUser(database, "Lasso-less Cowboy", "cowboy@gmail.com", p, "missingArgument1", "missingArgument2", 19)
+addUser(database, "test", "test@gmail.com", p, "John", "Doe", 18, "Male")
+p, _ = hashPassword("12345")
+addUser(database, "Lasso-less Cowboy", "cowboy@gmail.com", p, "missingArgument1", "missingArgument2", 19, "Male")
 p, _ = hashPassword("ZoomZoomZap")
-addUser(database, "SnapHappy", "snaphappyphotographer@email.com", p, "missingArgument1", "missingArgument2", 20)
+addUser(database, "SnapHappy", "snaphappyphotographer@email.com", p, "missingArgument1", "missingArgument2", 20, "Female")
 p, _ = hashPassword("kingtomyqueen")
-addUser(database, "RodeoQueen", "rodeoqueen@email.com", p, "missingArgument1", "missingArgument2", 21)
+addUser(database, "RodeoQueen", "rodeoqueen@email.com", p, "missingArgument1", "missingArgument2", 21, "Female")
 
 	addThread(database, "Ranch", 1)
 	addThread(database, "Dogs", 1)

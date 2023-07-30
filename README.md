@@ -37,7 +37,9 @@ To work with a Docker manually:
 
 You can login with other profiles as well:
 
-- cowboy@gmail.com blacksheep
+- test 1234
+
+- cowboy@gmail.com 12345
 
 - snaphappyphotographer@email.com ZoomZoomZap
 
